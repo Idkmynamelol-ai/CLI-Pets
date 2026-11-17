@@ -1,5 +1,6 @@
 # Terminal Agent Companion (Windows 11)
 
+[BTW IGNORE MY OTHER FILES DURING VIBECODE, I WAS JUST DOING HANDOFFS SO I CAN TEST OUT CLAWD-CHAN LMFAO, INCLUDING "AGENTS.md", "CLAUDE.md", "REDTEAM_FIXES.md", "HANDOFF_NEXT_AGENT.md"]
 A lightweight, native Windows 11 desktop companion that auto-detects AI coding agents running inside Windows Terminal (`pwsh` / `powershell` / `cmd`), normalizes their live progress, notifies you only when approval/completion/failure matters, lets you click an agent to focus its Windows Terminal window, and includes a **Custom PNG Studio UI** for assigning custom `.png` sprites to both companion states and agent families.
 
 ---

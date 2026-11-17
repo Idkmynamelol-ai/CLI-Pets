@@ -30,20 +30,6 @@ A lightweight, native Windows 11 desktop companion that auto-detects AI coding a
    - **Custom PNG Studio** (`Model > Icon` or the tray menu): browse or drag-and-drop validated custom `.png` files for all 7 companion states and all 4 agent families.
    - `NotificationService` respects Windows Focus Assist (`SHQueryUserNotificationState`) and in-app Mute, firing notifications only on transitions to `WaitingApproval`, `Finished`, or `Errored`.
 
----
-
-## 2. Verified Signal Table (This Machine)
-
-| Agent Family        | Signal Layer         | Verified on This Machine?            | Observed Path / Pattern                                                                                                                                                                                                                                       | Confidence               |
-| ------------------- | -------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| **Antigravity CLI** | Binary / Process     | **Verified**                         | `C:\Users\alins\AppData\Local\agy\bin\agy.exe`, `C:\Users\alins\.gemini\antigravity-cli\bin\agentapi.bat` (skipping `language_server` / `updater`)                                                                                                            | `Inferred`               |
-| **Antigravity CLI** | Session Artifacts    | **Verified**                         | `C:\Users\alins\.gemini\antigravity-cli\history.jsonl`, `...\brain\<id>\.system_generated\logs\transcript.jsonl` (`USER_INPUT`, `PLANNER_RESPONSE`, `tool_calls`, `status`), `cli.log`                                                                        | `Confirmed`              |
-| **Claude Code**     | Binary / Process     | **Verified (VS Code native binary)** | `C:\Users\alins\.vscode\extensions\anthropic.claude-code-2.1.319-win32-x64\resources\native-binary\claude.exe` (and `2.1.314`), plus CLI `claude.exe` / `node.exe` (`@anthropic-ai/claude-code`)                                                              | `Inferred`               |
-| **Claude Code**     | Session Dirs / Files | **Partially Verified**               | Verified present: `C:\Users\alins\.claude.json`, `C:\Users\alins\.claude\sessions\`, `C:\Users\alins\.claude\ide\`, `C:\Users\alins\AppData\Local\Temp\claude\`. **Unconfirmed on disk:** `%USERPROFILE%\.claude\projects\*\*.jsonl` (folder not yet created) | `Confirmed`              |
-| **Claude Code**     | Optional Native Hook | **Supported (Local Hook File)**      | Watch `data\hooks\claude*.jsonl` for `PreToolUse`, `PermissionRequest`, `Stop`, `SessionEnd`                                                                                                                                                                  | `Confirmed`              |
-| **Codex CLI**       | Binary / Artifacts   | **Unconfirmed on this machine**      | Not installed on disk; adapter matches `codex.exe` or `node.exe` with `@openai/codex` / `\codex` and watches `%USERPROFILE%\.codex\**\*.jsonl` + `data\hooks\codex*.jsonl`                                                                                    | `Inferred` / `Confirmed` |
-| **Cursor CLI**      | Binary / Artifacts   | **Unconfirmed on this machine**      | Not installed on disk; adapter matches `cursor-agent.exe`, `cursor.exe` (`agent`/`--headless`), or `node.exe` (`cursor-agent`) and watches `%USERPROFILE%\.cursor\`, `%APPDATA%\Cursor\logs\`, `data\hooks\cursor*.jsonl`                                     | `Inferred` / `Confirmed` |
-
 ### Windows Terminal Tab & Pane Investigation
 - `WindowsTerminal.exe` hosts multiple top-level `CASCADIA_HOSTING_WINDOW_CLASS` windows inside one process and injects a `WT_SESSION` UUID into every shell/agent environment block (verified readable from x64 PEB memory).
 - Windows Terminal exposes **no public Win32 HWND or COM API** to select an individual tab or split pane by `WT_SESSION` from outside the terminal without elevated UI Automation or synthetic keystrokes.
@@ -54,28 +40,6 @@ A lightweight, native Windows 11 desktop companion that auto-detects AI coding a
 
 ---
 
-## 3. Build, Run & Custom PNG Setup
-
-```bat
-cd C:\Users\alins\terminal-agent-companion
-start.bat
-```
-
-Or compile manually:
-```powershell
-powershell -ExecutionPolicy Bypass -File C:\Users\alins\terminal-agent-companion\build.ps1
-C:\Users\alins\terminal-agent-companion\AgentCompanion.exe
-```
-
-Inspect live detected processes & terminal windows from PowerShell:
-```powershell
-.\AgentCompanion.exe --dump-detected | Out-String
-```
-
-Launch with built-in multi-agent demo simulation:
-```powershell
-.\AgentCompanion.exe --demo
-```
 
 ### Using Custom PNGs
 1. Click the floating orb (or right-click it, or use the tray icon -> **Custom PNG Studio...**) and click **PNGs**.
@@ -90,10 +54,6 @@ Launch with built-in multi-agent demo simulation:
 ## 4. Test Plan
 
 ### Automated Verification (`AgentCompanionTests.exe`)
-Run:
-```bat
-C:\Users\alins\terminal-agent-companion\AgentCompanionTests.exe
-```
 Covers:
 1. **Secret redaction** (`sk-ant-...`, `sk-...`, `AIza...`, `ghp_...`, `Bearer ...`, `API_KEY=...`, `--token ...`).
 2. **Live Win32 PEB inspection** (executable path, command line, current directory on x64).

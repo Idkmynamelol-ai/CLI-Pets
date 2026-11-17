@@ -15,20 +15,6 @@ For current progress, completed milestones, and pending tasks, read [HANDOFF_NEX
   ```
   - Always add any new `.cs` file under `src\` to `$CoreFiles` in `build.ps1`.
   - Stop any running `AgentCompanion.exe` before building so the binary is not file-locked.
-
-## Verification Commands
-
-- **Run automated test suite:**
-  ```powershell
-  C:\Users\alins\terminal-agent-companion\AgentCompanionTests.exe
-  ```
-- **Render offline UI preview screenshots (WPF offscreen render):**
-  ```powershell
-  C:\Users\alins\terminal-agent-companion\AgentCompanion.exe --render-preview C:\Users\alins\terminal-agent-companion\previews
-  ```
-- **Inspect live detected terminal agents:**
-  ```powershell
-  C:\Users\alins\terminal-agent-companion\AgentCompanion.exe --dump-detected | Out-String
   ```
 
 ## Architecture & Key Conventions
